@@ -1,7 +1,7 @@
 # RiskAnalysesDashboard
 # Modelo de Control de Datos — Dashboard IA
 
-Prototipo **front-end (Angular)** de una herramienta de **control de calidad de datos y analítica de riesgo de crédito**, con foco en **series temporales** y una capa de **explicabilidad con IA**. Pensado como *"un Power BI especializado"* para carteras de crédito (PD, LGD, defaults, mora, contencioso…).
+Prototipo **front-end (Angular)** de una herramienta de **control de calidad de datos y analítica de riesgo de crédito**, con foco en **series temporales** y una capa de **explicabilidad con IA**. Pensado como para carteras de crédito (PD, LGD, defaults, mora, contencioso…).
 
 > ⚠️ **Demo con datos 100% hardcodeados.** No hay backend ni datos reales: todo lo que se ve está simulado para presentación. La lógica de datos vive en `app/src/app/data/`.
 
