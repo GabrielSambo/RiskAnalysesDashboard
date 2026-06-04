@@ -1,0 +1,56 @@
+:host {
+  --bg: #0b1220;
+  --panel: #131c2e;
+  --border: #1e293b;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --teal: #2dd4bf;
+  display: block;
+}
+
+.shell { display: flex; min-height: 100vh; background: var(--bg); }
+
+/* ---------- sidebar ---------- */
+.sidebar {
+  width: 248px; flex: none; background: #0d1626; border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh;
+}
+.brand { display: flex; align-items: center; gap: 12px; padding: 20px 18px 18px; border-bottom: 1px solid var(--border); }
+.logo {
+  width: 40px; height: 40px; flex: none; border-radius: 11px; display: grid; place-items: center;
+  background: linear-gradient(135deg, var(--teal), #0ea5e9); color: #06121a; font-size: 19px;
+}
+.brand-txt { display: flex; flex-direction: column; line-height: 1.25; }
+.brand-txt strong { font-size: 15px; color: var(--text); }
+.brand-txt span { font-size: 11px; color: var(--muted); }
+
+.nav { display: flex; flex-direction: column; padding: 12px 10px; gap: 3px; flex: 1; }
+.nav-item {
+  display: flex; align-items: center; gap: 11px; padding: 10px 12px; border-radius: 9px;
+  color: var(--muted); text-decoration: none; font-size: 13.5px; transition: background .12s, color .12s;
+}
+.nav-item:hover { background: #16203400; background: #131c2e; color: var(--text); }
+.nav-item.active { background: #1c2a44; color: #fff; }
+.nav-item.active .nav-num { background: var(--teal); color: #06121a; border-color: transparent; }
+.nav-num {
+  width: 22px; height: 22px; flex: none; border-radius: 6px; display: grid; place-items: center;
+  font-size: 11.5px; font-weight: 700; color: var(--muted); border: 1px solid var(--border); background: #0b1220;
+}
+.nav-ico { font-size: 15px; width: 18px; text-align: center; }
+.nav-title { line-height: 1.2; }
+
+.side-foot { padding: 14px 18px; border-top: 1px solid var(--border); }
+.demo-tag {
+  font-size: 10.5px; letter-spacing: 0.5px; color: #f59e0b;
+  border: 1px solid #f59e0b44; padding: 4px 9px; border-radius: 6px; background: #f59e0b11; display: inline-block;
+}
+
+/* ---------- content ---------- */
+.content { flex: 1; min-width: 0; }
+
+@media (max-width: 880px) {
+  .shell { flex-direction: column; }
+  .sidebar { width: 100%; height: auto; position: relative; flex-direction: column; }
+  .nav { flex-direction: row; flex-wrap: wrap; }
+  .nav-title { display: none; }
+}

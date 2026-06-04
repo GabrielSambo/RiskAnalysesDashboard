@@ -1,0 +1,180 @@
+<div class="dash">
+  <!-- ============ TOP BAR ============ -->
+  <header class="topbar">
+    <div class="brand">
+      <div>
+        <span class="eyebrow">05 · Dashboard principal</span>
+        <h1>Dashboard principal (core)</h1>
+        <p>Series temporales, segmentación, anomalías y explicabilidad sobre la cartera de riesgo.</p>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <button class="agent-btn" (click)="openAgent()">
+        <span class="pulse"></span> Analizar con agente
+        <span class="badge" *ngIf="errores + warnings">{{ errores + warnings }}</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============ FILTER BAR ============ -->
+  <div class="filterbar">
+    <div class="filter-group">
+      <label>Ventana temporal</label>
+      <div class="seg">
+        <button [class.on]="windowMonths() === 6" (click)="setWindow(6)">6M</button>
+        <button [class.on]="windowMonths() === 12" (click)="setWindow(12)">12M</button>
+        <button [class.on]="windowMonths() === 24" (click)="setWindow(24)">24M</button>
+      </div>
+    </div>
+    <div class="filter-group">
+      <label>Fecha de referencia</label>
+      <span class="range">{{ fechasVentana()[0] }} → {{ fechasVentana()[fechasVentana().length - 1] }}</span>
+    </div>
+    <div class="filter-group grow">
+      <label>Cohorte</label>
+      <span class="range muted">Todas las cohortes · expedientes activos</span>
+    </div>
+  </div>
+
+  <!-- ============ "QUÉ HA CAMBIADO" INSIGHT STRIP ============ -->
+  <section class="insights" *ngIf="insights().length">
+    <span class="insights-label">Qué ha cambiado</span>
+    <div class="insight-row">
+      <button class="insight" *ngFor="let i of insights()" [ngClass]="i.kind"
+              [class.clickable]="i.action" (click)="i.action && i.action()">
+        <span class="ins-ico">{{ i.icon }}</span>
+        <span class="ins-txt">
+          <strong>{{ i.titulo }}</strong>
+          <span class="ins-detalle">{{ i.detalle }}</span>
+        </span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ KPI CARDS ============ -->
+  <section class="kpis">
+    <div class="kpi-card" *ngFor="let k of kpis">
+      <span class="kpi-title">{{ k.titulo }}</span>
+      <span class="kpi-value">{{ k.valor }}<small *ngIf="k.sufijo">{{ k.sufijo }}</small></span>
+      <span class="kpi-delta" [class.up]="k.variacion >= 0" [class.down]="k.variacion < 0">
+        {{ k.variacion >= 0 ? '▲' : '▼' }} {{ (k.variacion >= 0 ? k.variacion : -k.variacion).toFixed(2) }}% vs mes ant.
+      </span>
+    </div>
+  </section>
+
+  <!-- ============ MAIN TIME SERIES ============ -->
+  <section class="panel main-panel">
+    <div class="panel-head">
+      <div>
+        <h2>Serie temporal por fecha de referencia</h2>
+        <p class="hint">💡 Haz click en un punto marcado (▲ / ▼) para ver la explicación automática</p>
+      </div>
+      <div class="seg">
+        <button *ngFor="let m of metricKeys" [class.on]="selectedMetric() === m" (click)="setMetric(m)">
+          {{ metricLabels[m].label }}
+        </button>
+      </div>
+    </div>
+    <app-chart [option]="mainOption()" height="340px" (pointClick)="onMainPointClick($event)"></app-chart>
+  </section>
+
+  <!-- ============ GRID: estado + drivers ============ -->
+  <div class="grid-2">
+    <section class="panel">
+      <div class="panel-head"><h2>Segmentación por estado</h2></div>
+      <app-chart [option]="estadoOption()" height="280px"></app-chart>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Segmentación por driver</h2>
+        <div class="seg small">
+          <button *ngFor="let d of drivers; let i = index" [class.on]="selectedDriver() === i" (click)="setDriver(i)">
+            {{ d.categoria }}
+          </button>
+        </div>
+      </div>
+      <app-chart [option]="driverOption()" height="280px"></app-chart>
+    </section>
+  </div>
+
+  <!-- ============ GRID: PD vs LGD + ODFs ============ -->
+  <div class="grid-2">
+    <section class="panel">
+      <div class="panel-head"><h2>Comparativa PD vs LGD</h2></div>
+      <app-chart [option]="pdLgdOption()" height="300px"></app-chart>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head"><h2>ODFs · tasas de mora por definición</h2></div>
+      <app-chart [option]="odfOption()" height="300px"></app-chart>
+    </section>
+  </div>
+
+  <!-- ============ GRID: data drift + pivot ============ -->
+  <div class="grid-2">
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Data drift · {{ drift.variable }}</h2>
+        <span class="psi" [class.alto]="drift.psi >= 0.2">PSI {{ drift.psi.toFixed(2) }}</span>
+      </div>
+      <app-chart [option]="driftOption()" height="280px"></app-chart>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head"><h2>Tabla pivot · defaults por estado y trimestre</h2></div>
+      <table class="pivot">
+        <thead>
+          <tr><th>Estado</th><th *ngFor="let c of pivot.columnas">{{ c }}</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let f of pivot.filas">
+            <td class="estado">{{ f.estado }}</td>
+            <td *ngFor="let v of f.valores" [class.neg]="v < 0" [class.zero]="v === 0">
+              {{ v > 0 ? '+' : '' }}{{ v }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <footer class="foot">Modelo de Control de Datos · prototipo front-end · valores hardcodeados para presentación</footer>
+</div>
+
+<!-- ============ EXPLAIN PANEL (click-to-explain) ============ -->
+<aside class="sidepanel right" [class.open]="explicacion()">
+  <ng-container *ngIf="explicacion() as a">
+    <div class="sp-head">
+      <h3>🧠 Explicabilidad IA</h3>
+      <button class="x" (click)="closeExplicacion()">✕</button>
+    </div>
+    <div class="sp-body">
+      <span class="anom-badge" [class.caida]="a.tipo === 'caida'">
+        {{ a.tipo === 'caida' ? 'Caída detectada' : 'Pico detectado' }} · {{ a.fecha }}
+      </span>
+      <h4 class="anom-title">{{ a.titulo }}</h4>
+      <p class="anom-text">{{ a.explicacion }}</p>
+      <h4 class="anom-sub">Drivers del cambio</h4>
+      <div class="driver-grid">
+        <div class="driver-cell" *ngFor="let d of a.drivers">
+          <span class="dl">{{ d.etiqueta }}</span>
+          <span class="dv">{{ d.valor }}</span>
+        </div>
+      </div>
+      <button class="contracts-btn" *ngIf="a.scope" (click)="verContratos()">
+        📋 Ver contratos afectados
+      </button>
+      <button class="contracts-btn ghost" *ngIf="a.nodeId" (click)="verLinaje()">
+        🔗 Ver cómo se construye
+      </button>
+      <button class="contracts-btn ghost" (click)="preguntarAsistente()">
+        💬 Preguntar al asistente
+      </button>
+      <p class="ai-note">Explicación generada automáticamente a partir de las estadísticas del punto seleccionado y el delta con el periodo anterior.</p>
+    </div>
+  </ng-container>
+</aside>
+
+<!-- backdrop del panel de explicabilidad -->
+<div class="backdrop" [class.show]="explicacion()" (click)="closeExplicacion()"></div>
