@@ -10,11 +10,6 @@ import { Check } from '../data/calidad';
   imports: [CommonModule],
   template: `
   <div class="page">
-    <div class="page-head">
-      <h1>Reglas de negocio</h1>
-      <p>Reglas basadas en lógica de riesgo y definición de variables. Este módulo está desacoplado del Data Quality y permite añadir reglas nuevas sin mezclar controles técnicos.</p>
-    </div>
-
     <div class="summary">
       <div class="sum ok"><span class="n">{{ summary.okCount }}</span><span>OK</span></div>
       <div class="sum warning"><span class="n">{{ summary.warningCount }}</span><span>Warnings</span></div>

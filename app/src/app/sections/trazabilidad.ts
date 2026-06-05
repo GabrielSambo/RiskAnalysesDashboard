@@ -12,7 +12,6 @@ import { NODOS, ARISTAS, CAPAS, NodoLinaje } from '../data/lineage';
   template: `
   <div class="page">
     <div class="page-head">
-      <p>Flujo completo origen → transformación → modelo → dashboard. Pincha en un nodo para ver su detalle, sus dependencias y, aguas abajo, todo lo que se vería afectado si ese dato cambia.</p>
     </div>
 
     <div class="legend">
@@ -22,7 +21,7 @@ import { NODOS, ARISTAS, CAPAS, NodoLinaje } from '../data/lineage';
     <div class="grid2 lin-grid">
       <div class="card">
         <h2 class="tight">Grafo de linaje</h2>
-        <p class="hint">Click en cualquier nodo · se resalta lo que hay aguas abajo</p>
+        <p class="hint">Click en cualquier nodo · se resalta el impacto</p>
         <app-chart [option]="graphOption()" height="420px" (pointClick)="onNode($event)"></app-chart>
       </div>
 
@@ -32,13 +31,13 @@ import { NODOS, ARISTAS, CAPAS, NodoLinaje } from '../data/lineage';
           <h2 class="node-name">{{ n.nombre }}</h2>
           <p class="node-desc">{{ n.detalle }}</p>
 
-          <h3>Dependencias (aguas arriba)</h3>
+          <h3>Origen de datos</h3>
           <div class="deps" *ngIf="n.dependencias.length; else sinDeps">
             <span class="dep" *ngFor="let d of n.dependencias">{{ nombreNodo(d) }}</span>
           </div>
           <ng-template #sinDeps><p class="muted small">Nodo origen — sin dependencias.</p></ng-template>
 
-          <h3>Aguas abajo · qué afecta</h3>
+          <h3>Impacto posterior</h3>
           <div class="deps" *ngIf="afecta().length; else sinDown">
             <span class="dep down" *ngFor="let nm of afecta()">{{ nm }}</span>
           </div>
@@ -52,7 +51,7 @@ import { NODOS, ARISTAS, CAPAS, NodoLinaje } from '../data/lineage';
         <ng-template #vacio>
           <div class="empty">
             <span class="empty-ico"></span>
-            <p>Selecciona un nodo del grafo para ver su detalle e impacto aguas abajo.</p>
+            <p>Selecciona un nodo del grafo para ver su detalle e impacto.</p>
           </div>
         </ng-template>
       </div>

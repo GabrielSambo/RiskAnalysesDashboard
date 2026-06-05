@@ -30,7 +30,7 @@ import { CHECKS, Check } from '../data/calidad';
 
     <section class="section">
       <div class="section-head">
-        <h2>Data Quality</h2>
+        <h2>Calidad del dato</h2>
         <p class="hint">Controles técnicos del dato: missing, duplicados, valores fuera de rango, tipos y valores inválidos.</p>
       </div>
       <div class="card group" *ngFor="let g of qualityGroups">

@@ -11,11 +11,6 @@ import { Check } from '../data/calidad';
   imports: [CommonModule],
   template: `
   <div class="page">
-    <div class="page-head">
-      <h1>Data Quality (DQ)</h1>
-      <p>Controles técnicos y genéricos de calidad de datos: missing, duplicados, tipos, rango y consistencia. Este módulo es independiente del negocio y reutilizable para cualquier dataset.</p>
-    </div>
-
     <div class="summary">
       <div class="sum ok"><span class="n">{{ summary.okCount }}</span><span>OK</span></div>
       <div class="sum warning"><span class="n">{{ summary.warningCount }}</span><span>Warnings</span></div>

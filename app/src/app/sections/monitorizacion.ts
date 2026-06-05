@@ -17,7 +17,6 @@ const SEV_ORDEN: Record<string, number> = { alta: 0, media: 1, baja: 2 };
   template: `
   <div class="page">
     <div class="page-head">
-      <p>Qué está cambiando en el riesgo de la cartera entre periodos, por qué, y qué expedientes hay detrás. El detalle técnico (drift por variable, PSI) está más abajo.</p>
     </div>
 
     <!-- resumen del periodo (negocio) -->

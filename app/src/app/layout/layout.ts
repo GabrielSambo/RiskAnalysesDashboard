@@ -16,7 +16,7 @@ export class Layout implements OnInit {
     { ruta: '/ingesta', num: 1, icono: '', titulo: 'Ingesta de datos' },
     { ruta: '/conocimiento', num: 2, icono: '', titulo: 'Conocimiento del dato' },
     { ruta: '/trazabilidad', num: 3, icono: '', titulo: 'Trazabilidad' },
-    { ruta: '/calidad', num: 4, icono: '', titulo: 'Data Quality' },
+    { ruta: '/calidad', num: 4, icono: '', titulo: 'Calidad del dato' },
     { ruta: '/reglas-negocio', num: 5, icono: '', titulo: 'Reglas de negocio' },
     { ruta: '/dashboard', num: 6, icono: '', titulo: 'Dashboard principal' },
     { ruta: '/monitorizacion', num: 7, icono: '', titulo: 'Monitorización del modelo' },

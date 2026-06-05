@@ -3,7 +3,6 @@
   <header class="topbar">
     <div class="brand">
       <div>
-        <p>Series temporales, segmentación, anomalías y explicabilidad sobre la cartera de riesgo.</p>
       </div>
     </div>
   </header>
@@ -27,21 +26,6 @@
       <span class="range muted">Todas las cohortes · expedientes activos</span>
     </div>
   </div>
-
-  <!-- ============ "QUÉ HA CAMBIADO" INSIGHT STRIP ============ -->
-  <section class="insights" *ngIf="insights().length">
-    <span class="insights-label">Qué ha cambiado</span>
-    <div class="insight-row">
-      <button class="insight" *ngFor="let i of insights()" [ngClass]="i.kind"
-              [class.clickable]="i.action" (click)="i.action && i.action()">
-        <span class="ins-ico">{{ i.icon }}</span>
-        <span class="ins-txt">
-          <strong>{{ i.titulo }}</strong>
-          <span class="ins-detalle">{{ i.detalle }}</span>
-        </span>
-      </button>
-    </div>
-  </section>
 
   <!-- ============ KPI CARDS ============ -->
   <section class="kpis">
@@ -159,7 +143,7 @@
 <aside class="sidepanel right" [class.open]="explicacion() && !agentOpen()">
   <ng-container *ngIf="explicacion() as a">
     <div class="sp-head">
-      <h3>🧠 Explicabilidad IA</h3>
+      <h3>Explicabilidad IA</h3>
       <button class="x" (click)="closeExplicacion()">✕</button>
     </div>
     <div class="sp-body">
@@ -179,7 +163,7 @@
         Ver contratos afectados
       </button>
       <button class="contracts-btn ghost" *ngIf="a.nodeId" (click)="verLinaje()">
-        Ver cómo se construye
+        Ver trazabilidad
       </button>
       <button class="contracts-btn ghost" (click)="preguntarAsistente()">
         Preguntar al asistente

@@ -15,7 +15,6 @@ import { SERIE, POR_ESTADO, DRIVERS } from '../data/mock-data';
   template: `
   <div class="page">
     <div class="page-head">
-      <p>Explora cada variable: su evolución, distribución, estado de calidad y dónde impacta. Pincha una variable para ver su detalle y el asistente te la explica con su origen y dependencias.</p>
     </div>
 
     <!-- explorador de variables (master-detail) -->
@@ -53,15 +52,15 @@ import { SERIE, POR_ESTADO, DRIVERS } from '../data/mock-data';
               <app-chart [option]="distribOption()" height="130px"></app-chart>
             </ng-container>
 
-            <h4>Por qué cambia · qué la afecta</h4>
+            <h4>Factores explicativos</h4>
             <p class="vd-why">{{ v.porque }}</p>
 
-            <h4 *ngIf="v.usa?.length">Dónde se usa</h4>
+            <h4 *ngIf="v.usa?.length">Tablas input</h4>
             <div class="chips" *ngIf="v.usa?.length">
               <span class="chip" *ngFor="let u of v.usa">{{ u }}</span>
             </div>
 
-            <button class="link-btn" *ngIf="v.nodeId" (click)="verLinaje(v)">Ver cómo se construye →</button>
+            <button class="link-btn" *ngIf="v.nodeId" (click)="verLinaje(v)">Trazabilidad →</button>
           </ng-container>
           <ng-template #vacio>
             <div class="empty"><span class="empty-ico"></span><p>Selecciona una variable para explorarla.</p></div>
@@ -173,7 +172,7 @@ export class Conocimiento {
       texto: `${variable} — ${def?.descripcion ?? ''}. ${def?.porque ?? ''}`,
       meta: [
         { etiqueta: 'Origen', valor: def?.origen ?? '—' },
-        { etiqueta: 'Uso', valor: (def?.usa ?? []).join(' · ') || '—' },
+        { etiqueta: 'Tablas input', valor: (def?.usa ?? []).join(' · ') || '—' },
         { etiqueta: 'Estado', valor: def?.estado ?? '—' },
       ],
     };

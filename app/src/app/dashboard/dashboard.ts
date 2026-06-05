@@ -91,7 +91,7 @@ export class Dashboard {
     this.store.focusAnomaly(a);
   }
 
-  // ---- strip "Qué ha cambiado": anomalías priorizadas + top mover ↑/↓ ----
+  // ---- strip "Cambios relevantes": anomalías priorizadas + top mover ↑/↓ ----
   private readonly moverSeries = [
     { key: 'defaults', label: 'Nº defaults', arr: SERIE.defaults, unit: '', dec: 0 },
     { key: 'pd', label: 'PD media', arr: SERIE.pd, unit: ' pp', dec: 2 },
@@ -141,7 +141,7 @@ export class Dashboard {
     if (a?.scope) this.store.openContracts(a.scope);
   }
 
-  // ---- "ver cómo se construye": salta al linaje con el nodo origen enfocado ----
+  // ---- "Trazabilidad": salta al linaje con el nodo origen enfocado ----
   verLinaje() {
     const a = this.explicacion();
     if (a?.nodeId) this.store.goToLineageNode(a.nodeId);
