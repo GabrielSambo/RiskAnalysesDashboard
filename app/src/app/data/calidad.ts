@@ -27,16 +27,16 @@ export interface AgenteTarget { metric?: 'defaults' | 'pd' | 'lgd'; date?: strin
 export const AGENTE_RESUMEN = {
   titular: 'He analizado 7 checks sobre 13.070 contratos del cierre 2025-12',
   problemas: [
-    { sev: 'error', texto: '7 contratos con default = 1 y estado "Sano" → incoherencia que infraestima la tasa de default.', scope: 'incoh-default-estado' },
-    { sev: 'warning', texto: '14 contratos superan DPD > 90 sin marca de default → posible incumplimiento de la regla regulatoria.', scope: 'dpd90-sin-default' },
-    { sev: 'warning', texto: 'Correlación PD–LGD de 0,62, por encima de lo esperado → revisar independencia entre modelos.' },
-  ] as { sev: string; texto: string; scope?: string }[],
+    { sev: 'error', texto: '7 contratos con default = 1 y estado "Sano" → incoherencia que infraestima la tasa de default.', scope: 'incoh-default-estado', metrics: ['defaults'] },
+    { sev: 'warning', texto: '14 contratos superan DPD > 90 sin marca de default → posible incumplimiento de la regla regulatoria.', scope: 'dpd90-sin-default', metrics: ['defaults'] },
+    { sev: 'warning', texto: 'Correlación PD–LGD de 0,62, por encima de lo esperado → revisar independencia entre modelos.', metrics: ['pd', 'lgd'] },
+  ] as { sev: string; texto: string; scope?: string; metrics?: ('defaults'|'pd'|'lgd')[] }[],
   cambios: [
     { texto: 'La LGD media cayó -17% en 2025-07; coincide con una venta de cartera registrada ese mes.', target: { metric: 'lgd', date: '2025-07' } },
     { texto: 'El nº de contratos en contencioso subió +312 en 2025-03, explicando el pico de defaults.', target: { metric: 'defaults', date: '2025-03' } },
   ] as { texto: string; target?: AgenteTarget }[],
   causas: [
-    'Las 7 incoherencias default/estado se concentran en expedientes recién entrados en contencioso: probable desfase de actualización del estado respecto a la marca de default.',
-    'Los 38 LGD missing corresponden a contratos en contencioso sin recobro cerrado todavía.',
-  ],
+    { texto: 'Las 7 incoherencias default/estado se concentran en expedientes recién entrados en contencioso: probable desfase de actualización del estado respecto a la marca de default.', metrics: ['defaults'] },
+    { texto: 'Los 38 LGD missing corresponden a contratos en contencioso sin recobro cerrado todavía.', metrics: ['lgd'] },
+  ] as { texto: string; metrics?: ('defaults'|'pd'|'lgd')[] }[],
 };

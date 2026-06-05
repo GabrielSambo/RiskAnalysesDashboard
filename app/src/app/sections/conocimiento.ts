@@ -129,7 +129,7 @@ import { SERIE, POR_ESTADO, DRIVERS } from '../data/mock-data';
     .suggest { border-top: 1px solid var(--border); padding-top: 12px; }
     .sg-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); }
     .sg-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-    .sg-chips button { background: #0b1220; border: 1px solid var(--border); color: var(--text); font-size: 12.5px; padding: 7px 12px; border-radius: 18px; cursor: pointer; }
+    .sg-chips button { background: var(--panel); border: 1px solid var(--border); color: var(--text); font-size: 12.5px; padding: 7px 12px; border-radius: 18px; cursor: pointer; }
     .sg-chips button:hover { border-color: var(--teal); color: var(--teal); }
     .composer { display: flex; gap: 8px; margin-top: 12px; }
     .composer input { flex: 1; background: var(--panel-2); border: 1px solid var(--border); border-radius: 9px; padding: 10px 12px; color: var(--text); font-size: 13px; }

@@ -6,12 +6,6 @@
         <p>Series temporales, segmentación, anomalías y explicabilidad sobre la cartera de riesgo.</p>
       </div>
     </div>
-    <div class="topbar-actions">
-      <button class="agent-btn" (click)="openAgent()">
-        <span class="pulse"></span> Analizar con agente
-        <span class="badge" *ngIf="errores + warnings">{{ errores + warnings }}</span>
-      </button>
-    </div>
   </header>
 
   <!-- ============ FILTER BAR ============ -->
@@ -65,7 +59,7 @@
     <div class="panel-head">
       <div>
         <h2>Serie temporal por fecha de referencia</h2>
-        <p class="hint">Haz click en un punto marcado (▲ / ▼) para ver la explicación automática</p>
+        <p class="hint">Haz click en un punto marcado (▲ / ▼) para abrir el análisis del agente</p>
       </div>
       <div class="seg">
         <button *ngFor="let m of metricKeys" [class.on]="selectedMetric() === m" (click)="setMetric(m)">
@@ -109,6 +103,27 @@
     </section>
   </div>
 
+  <!-- ============ CONFIGURABLE COMPARISON (two dropdowns) ============ -->
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <h2>Comparativa configurable</h2>
+        <p class="hint">Selecciona dos variables procedentes de la ingesta para comparar su evolución media por fecha.</p>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+        <label style="font-size:12px;color:var(--muted);">Variable A</label>
+        <select (change)="onVarAChange($event)" [value]="varA()">
+          <option *ngFor="let v of vars" [value]="v">{{ v }}</option>
+        </select>
+        <label style="font-size:12px;color:var(--muted);">Variable B</label>
+        <select (change)="onVarBChange($event)" [value]="varB()">
+          <option *ngFor="let v of vars" [value]="v">{{ v }}</option>
+        </select>
+      </div>
+    </div>
+    <app-chart [option]="compareOption()" height="320px"></app-chart>
+  </section>
+
   <!-- ============ GRID: data drift + pivot ============ -->
   <div class="grid-2">
     <section class="panel">
@@ -141,7 +156,7 @@
 </div>
 
 <!-- ============ EXPLAIN PANEL (click-to-explain) ============ -->
-<aside class="sidepanel right" [class.open]="explicacion()">
+<aside class="sidepanel right" [class.open]="explicacion() && !agentOpen()">
   <ng-container *ngIf="explicacion() as a">
     <div class="sp-head">
       <h3>🧠 Explicabilidad IA</h3>
@@ -175,4 +190,4 @@
 </aside>
 
 <!-- backdrop del panel de explicabilidad -->
-<div class="backdrop" [class.show]="explicacion()" (click)="closeExplicacion()"></div>
+<div class="backdrop" [class.show]="explicacion() && !agentOpen()" (click)="closeExplicacion()"></div>

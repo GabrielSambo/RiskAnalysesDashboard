@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ContextStore } from '../core/context.store';
 import { ALERTAS, Alerta } from '../data/mock-data';
@@ -23,10 +23,17 @@ import { AGENTE_RESUMEN, AgenteTarget } from '../data/calidad';
       <button class="x" (click)="store.closeAgent()">✕</button>
     </div>
     <div class="sp-body">
-      <p class="sp-intro">Monitorización continua con umbrales configurables. Pincha una alerta o un problema para ir al dato afectado.</p>
+      <p class="sp-intro" *ngIf="!anomaly()">Monitorización continua con umbrales configurables. Pincha una alerta o un problema para ir al dato afectado.</p>
+      <ng-container *ngIf="anomaly() as anomaly">
+        <p class="sp-intro">
+          Análisis automático para
+          <strong>{{ anomaly.serie === 'defaults' ? 'Nº defaults' : anomaly.serie === 'pd' ? 'PD media' : 'LGD media' }}</strong>
+          en {{ anomaly.fecha }}.
+        </p>
+      </ng-container>
 
       <h4 class="sec">Alertas del sensor</h4>
-      <div class="alert" *ngFor="let a of alertas" [class]="a.nivel"
+      <div class="alert" *ngFor="let a of filteredAlertas()" [class]="a.nivel"
            [class.clickable]="a.target" (click)="onAlert(a)">
         <div class="alert-top">
           <span class="dot"></span>
@@ -36,27 +43,31 @@ import { AGENTE_RESUMEN, AgenteTarget } from '../data/calidad';
         <p>{{ a.detalle }}</p>
         <span class="alert-cta" *ngIf="a.target">Ver en el gráfico →</span>
       </div>
+      <div class="hint" *ngIf="anomaly() && filteredAlertas().length === 0">No hay alertas específicas para esta métrica.</div>
 
       <button class="analizar" (click)="analizar()">
-        <span class="pulse"></span> {{ analizado() ? 'Re-analizar' : 'Analizar con agente' }}
+        <span class="pulse"></span> {{ analyzed() ? 'Re-analizar' : 'Analizar con agente' }}
       </button>
 
-      <div class="analysis" *ngIf="analizado()">
+      <div class="analysis" *ngIf="analyzed()">
         <h4 class="sec">Problemas priorizados</h4>
-        <div class="ao-item" *ngFor="let p of resumen.problemas"
+        <div class="ao-item" *ngFor="let p of filteredProblemas()"
              [class.clickable]="p.scope" (click)="p.scope && verContratos(p.scope)">
           <span class="pill" [ngClass]="p.sev">{{ p.sev }}</span>
           <span>{{ p.texto }}<span class="mini-cta" *ngIf="p.scope"> · ver contratos →</span></span>
         </div>
+        <div class="hint" *ngIf="anomaly() && filteredProblemas().length === 0">No hay problemas priorizados específicos para esta métrica.</div>
 
         <h4 class="sec">Cambios relevantes</h4>
-        <div class="ao-line" *ngFor="let c of resumen.cambios"
+        <div class="ao-line" *ngFor="let c of filteredCambios()"
              [class.clickable]="c.target" (click)="onCambio(c.target)">
           ↳ {{ c.texto }}<span class="mini-cta" *ngIf="c.target"> · ver en gráfico →</span>
         </div>
+        <div class="hint" *ngIf="anomaly() && filteredCambios().length === 0">No hay cambios relevantes específicos para esta métrica.</div>
 
         <h4 class="sec">Posibles causas</h4>
-        <div class="ao-line cause" *ngFor="let c of resumen.causas">{{ c }}</div>
+        <div class="ao-line cause" *ngFor="let c of filteredCausas()">{{ c.texto }}</div>
+        <div class="hint" *ngIf="anomaly() && filteredCausas().length === 0">No hay causas específicas adicionales para esta métrica.</div>
       </div>
 
       <div class="thresholds">
@@ -112,6 +123,33 @@ export class AgentPanel {
   readonly alertas = ALERTAS;
   readonly resumen = AGENTE_RESUMEN;
   readonly analizado = signal(false);
+
+  readonly anomaly = computed(() => this.store.activeAnomaly());
+  readonly analyzed = computed(() => this.analizado() || !!this.anomaly());
+
+  readonly filteredAlertas = computed(() => {
+    const anom = this.anomaly();
+    if (!anom) return ALERTAS;
+    return ALERTAS.filter(a => a.target?.metric === anom.serie);
+  });
+
+  readonly filteredProblemas = computed(() => {
+    const anom = this.anomaly();
+    if (!anom) return this.resumen.problemas;
+    return this.resumen.problemas.filter(p => !p.metrics || p.metrics.includes(anom.serie));
+  });
+
+  readonly filteredCambios = computed(() => {
+    const anom = this.anomaly();
+    if (!anom) return this.resumen.cambios;
+    return this.resumen.cambios.filter(c => !c.target || c.target.metric === anom.serie);
+  });
+
+  readonly filteredCausas = computed(() => {
+    const anom = this.anomaly();
+    if (!anom) return this.resumen.causas;
+    return this.resumen.causas.filter(c => !c.metrics || c.metrics.includes(anom.serie));
+  });
 
   readonly umbrales = [
     { label: 'PD media máx.', valor: '3,00 %' },

@@ -28,23 +28,53 @@ import { CHECKS, Check } from '../data/calidad';
         <span class="hl-cta" *ngIf="c.scope" (click)="verContratos(c)">ver contratos →</span></span>
     </div>
 
-    <div class="card group" *ngFor="let g of grupos">
-      <h2 class="ghead"><span class="gdot" [ngClass]="g.nivel"></span> {{ g.titulo }} <span class="gcount">{{ g.items.length }}</span></h2>
-      <table class="tbl" *ngIf="g.items.length; else vacio">
-        <thead><tr><th>Categoría</th><th>Check</th><th>Detalle</th><th>Afectados</th><th>Impacto</th><th></th></tr></thead>
-        <tbody>
-          <tr *ngFor="let c of g.items" [class.clickable]="c.scope" (click)="verContratos(c)">
-            <td>{{ c.categoria }}</td>
-            <td><strong>{{ c.nombre }}</strong></td>
-            <td class="muted">{{ c.detalle }}</td>
-            <td class="mono">{{ c.afectados }}</td>
-            <td class="muted">{{ c.impacto }}</td>
-            <td class="acc">{{ c.scope ? 'ver contratos →' : '' }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <ng-template #vacio><p class="muted empty">Sin elementos.</p></ng-template>
-    </div>
+    <section class="section">
+      <div class="section-head">
+        <h2>Data Quality</h2>
+        <p class="hint">Controles técnicos del dato: missing, duplicados, valores fuera de rango, tipos y valores inválidos.</p>
+      </div>
+      <div class="card group" *ngFor="let g of qualityGroups">
+        <h2 class="ghead"><span class="gdot" [ngClass]="g.nivel"></span> {{ g.titulo }} <span class="gcount">{{ g.items.length }}</span></h2>
+        <table class="tbl" *ngIf="g.items.length; else vacio">
+          <thead><tr><th>Categoría</th><th>Check</th><th>Detalle</th><th>Afectados</th><th>Impacto</th><th></th></tr></thead>
+          <tbody>
+            <tr *ngFor="let c of g.items" [class.clickable]="c.scope" (click)="verContratos(c)">
+              <td>{{ c.categoria }}</td>
+              <td><strong>{{ c.nombre }}</strong></td>
+              <td class="muted">{{ c.detalle }}</td>
+              <td class="mono">{{ c.afectados }}</td>
+              <td class="muted">{{ c.impacto }}</td>
+              <td class="acc">{{ c.scope ? 'ver contratos →' : '' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Reglas de negocio</h2>
+        <p class="hint">Controles basados en la lógica de negocio y el riesgo: default, coherencia PD/LGD/default y reglas de eventos.</p>
+      </div>
+      <div class="card group" *ngFor="let g of businessGroups">
+        <h2 class="ghead"><span class="gdot" [ngClass]="g.nivel"></span> {{ g.titulo }} <span class="gcount">{{ g.items.length }}</span></h2>
+        <table class="tbl" *ngIf="g.items.length; else vacio">
+          <thead><tr><th>Categoría</th><th>Check</th><th>Detalle</th><th>Afectados</th><th>Impacto</th><th></th></tr></thead>
+          <tbody>
+            <tr *ngFor="let c of g.items" [class.clickable]="c.scope" (click)="verContratos(c)">
+              <td>{{ c.categoria }}</td>
+              <td><strong>{{ c.nombre }}</strong></td>
+              <td class="muted">{{ c.detalle }}</td>
+              <td class="mono">{{ c.afectados }}</td>
+              <td class="muted">{{ c.impacto }}</td>
+              <td class="acc">{{ c.scope ? 'ver contratos →' : '' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <ng-template #vacio><p class="muted empty">Sin elementos.</p></ng-template>
   </div>
   `,
   styles: [`
@@ -61,6 +91,10 @@ import { CHECKS, Check } from '../data/calidad';
     @keyframes pulse { 0% { box-shadow: 0 0 0 0 #4ade8099; } 70% { box-shadow: 0 0 0 8px #4ade8000; } 100% { box-shadow: 0 0 0 0 #4ade8000; } }
     .headline { display: flex; align-items: flex-start; gap: 10px; background: #ef44441a; border: 1px solid #ef444455; border-radius: 11px; padding: 12px 16px; margin-bottom: 18px; font-size: 13.5px; line-height: 1.5; }
     .hl-cta, .acc { color: #818cf8; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .section { margin-bottom: 30px; }
+    .section-head { display: flex; justify-content: space-between; gap: 16px; align-items: flex-end; margin-bottom: 14px; }
+    .section-head h2 { margin: 0; font-size: 16px; }
+    .section-head .hint { margin: 0; }
     .group { margin-bottom: 16px; }
     .ghead { display: flex; align-items: center; gap: 10px; font-size: 14px; margin: 0 0 12px; }
     .gdot { width: 10px; height: 10px; border-radius: 50%; }
@@ -82,10 +116,29 @@ export class Calidad {
   readonly critico = CHECKS.find(c => c.resultado === 'error') ?? null;
 
   /** Checks agrupados por criticidad; los warnings ordenados por nº de afectados. */
-  readonly grupos = [
-    { nivel: 'error', titulo: 'Críticos', items: CHECKS.filter(c => c.resultado === 'error') },
-    { nivel: 'warning', titulo: 'Secundarios', items: CHECKS.filter(c => c.resultado === 'warning').sort((a, b) => b.afectados - a.afectados) },
-    { nivel: 'ok', titulo: 'OK', items: CHECKS.filter(c => c.resultado === 'ok') },
+  readonly qualityChecks = CHECKS.filter(c => [
+    'Valores missing',
+    'Duplicados',
+    'PD válida (0–1)',
+    'Contratos esperados',
+  ].includes(c.nombre));
+
+  readonly businessChecks = CHECKS.filter(c => [
+    'Default vs estado',
+    'Regla DPD > 90 → default',
+    'Comparativa PD vs LGD',
+  ].includes(c.nombre));
+
+  readonly qualityGroups = [
+    { nivel: 'error', titulo: 'Críticos', items: this.qualityChecks.filter(c => c.resultado === 'error') },
+    { nivel: 'warning', titulo: 'Secundarios', items: this.qualityChecks.filter(c => c.resultado === 'warning').sort((a, b) => b.afectados - a.afectados) },
+    { nivel: 'ok', titulo: 'OK', items: this.qualityChecks.filter(c => c.resultado === 'ok') },
+  ];
+
+  readonly businessGroups = [
+    { nivel: 'error', titulo: 'Críticos', items: this.businessChecks.filter(c => c.resultado === 'error') },
+    { nivel: 'warning', titulo: 'Secundarios', items: this.businessChecks.filter(c => c.resultado === 'warning').sort((a, b) => b.afectados - a.afectados) },
+    { nivel: 'ok', titulo: 'OK', items: this.businessChecks.filter(c => c.resultado === 'ok') },
   ];
 
   abrirAgente() { this.store.openAgent(); }

@@ -7,6 +7,7 @@ import {
   SERIE, KPIS, POR_ESTADO, DRIVERS, ODFS, DATA_DRIFT,
   ANOMALIAS, PIVOT, ALERTAS, Anomalia,
 } from '../data/mock-data';
+import { PREVIEW } from '../data/ingesta';
 
 /** Tarjeta del strip "Qué ha cambiado". */
 interface Insight {
@@ -38,6 +39,10 @@ export class Dashboard {
   readonly odfs = ODFS;
   readonly drift = DATA_DRIFT;
   readonly pivot = PIVOT;
+  // --- variables procedentes de Ingesta (preview.columnas) ---
+  readonly vars = PREVIEW.columnas;
+  readonly varA = signal<string>(this.vars.includes('pd') ? 'pd' : this.vars[0]);
+  readonly varB = signal<string>(this.vars.includes('lgd') ? 'lgd' : (this.vars.length > 1 ? this.vars[1] : this.vars[0]));
   readonly alertas = ALERTAS;
   readonly metricKeys: MetricKey[] = ['defaults', 'pd', 'lgd'];
   readonly metricLabels = METRICS;
@@ -48,6 +53,7 @@ export class Dashboard {
   readonly selectedMetric = computed<MetricKey>(() => this.store.focus().metric ?? 'defaults');
   readonly windowMonths = computed<number>(() => this.store.focus().window);
   readonly explicacion = this.store.activeAnomaly;
+  readonly agentOpen = computed(() => this.store.agentOpen());
 
   // estado puramente local de UI (no necesita compartirse)
   readonly selectedDriver = signal<number>(0);
@@ -62,15 +68,23 @@ export class Dashboard {
   setMetric(m: MetricKey) { this.store.setMetric(m); }
   setWindow(m: number) { this.store.setWindow(m as 6 | 12 | 24); }
   setDriver(i: number) { this.selectedDriver.set(i); }
-  openAgent() { this.store.openAgent(); }
   closeExplicacion() { this.store.focusAnomaly(null); }
+
+  setVarA(v: string) { this.varA.set(v); }
+  setVarB(v: string) { this.varB.set(v); }
+
+  onVarAChange(e: Event) { const v = (e.target as HTMLSelectElement | null)?.value; if (v) this.varA.set(v); }
+  onVarBChange(e: Event) { const v = (e.target as HTMLSelectElement | null)?.value; if (v) this.varB.set(v); }
 
   // ---- click-to-explain sobre la serie principal ----
   onMainPointClick(e: { dataIndex: number }) {
     const fecha = this.fechasVentana()[e.dataIndex];
     const metric = this.selectedMetric();
     const anomalia = ANOMALIAS.find(a => a.fecha === fecha && a.serie === metric);
-    if (anomalia) this.store.focusAnomaly(anomalia);
+    if (anomalia) {
+      this.store.focusAnomaly(anomalia);
+      this.store.openAgent();
+    }
   }
 
   abrirAnomalia(a: Anomalia) {
@@ -261,6 +275,61 @@ export class Dashboard {
       }],
     } as any;
   });
+
+    // ---- Comparativa configurable (dos variables desde Ingesta) ----
+    readonly compareOption = computed(() => {
+      const labels = SERIE.fechas.slice(-8);
+      const makeSeries = (variable: string, offset: number) =>
+        labels.map((_, idx) => {
+          const base = variable
+            .split('')
+            .reduce((sum, c) => sum + c.charCodeAt(0), 0);
+          return Math.round((Math.sin((base + idx * 7 + offset) / 12) * 18 + 24) * 10) / 10;
+        });
+
+      const seriesA = makeSeries(this.varA(), 0);
+      const seriesB = makeSeries(this.varB(), 23);
+
+      return {
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: { type: 'line' },
+          backgroundColor: '#0f172a',
+          borderColor: '#334155',
+          textStyle: { color: '#e2e8f0' },
+        },
+        legend: {
+          data: [this.varA(), this.varB()],
+          textStyle: { color: '#cbd5e1' },
+          top: 0,
+        },
+        grid: { ...this.grid, top: 50 },
+        xAxis: { type: 'category', data: labels, ...this.axisStyle, name: 'Fecha' },
+        yAxis: { type: 'value', ...this.axisStyle, name: 'Valor' },
+        series: [
+          {
+            name: this.varA(),
+            type: 'line',
+            smooth: true,
+            symbol: 'circle',
+            symbolSize: 8,
+            data: seriesA,
+            lineStyle: { width: 2, color: '#60a5fa' },
+            itemStyle: { color: '#60a5fa' },
+          },
+          {
+            name: this.varB(),
+            type: 'line',
+            smooth: true,
+            symbol: 'circle',
+            symbolSize: 8,
+            data: seriesB,
+            lineStyle: { width: 2, color: '#f59e0b' },
+            itemStyle: { color: '#f59e0b' },
+          },
+        ],
+      } as any;
+    });
 
   // ---- Data drift (barras agrupadas A vs B) ----
   readonly driftOption = computed(() => ({

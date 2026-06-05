@@ -5,6 +5,17 @@
         <strong>Control de Datos</strong>
         <span>Dashboard IA · Riesgo de credito</span>
       </div>
+
+      <div class="settings">
+        <button class="settings-toggle" type="button" (click)="toggleDropdown()" aria-haspopup="true" aria-expanded="{{ showSettings }}" aria-label="Ajustes de tema">
+          <span class="settings-icon">⚙</span>
+        </button>
+        <div class="settings-dropdown" *ngIf="showSettings">
+          <div class="settings-title">Fondo</div>
+          <button type="button" class="theme-option" [class.active]="theme === 'dark'" (click)="setTheme('dark')">Dark</button>
+          <button type="button" class="theme-option" [class.active]="theme === 'light'" (click)="setTheme('light')">Light</button>
+        </div>
+      </div>
     </div>
 
     <nav class="topnav">

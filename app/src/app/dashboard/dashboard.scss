@@ -1,13 +1,4 @@
 :host {
-  --bg: #0b1220;
-  --panel: #131c2e;
-  --panel-2: #0f172a;
-  --border: #1e293b;
-  --text: #e2e8f0;
-  --muted: #94a3b8;
-  --teal: #2dd4bf;
-  --amber: #f59e0b;
-  --red: #ef4444;
   display: block;
   background: var(--bg);
   color: var(--text);
@@ -31,17 +22,6 @@
 .demo-tag {
   font-size: 11px; letter-spacing: 0.5px; color: var(--amber);
   border: 1px solid #f59e0b44; padding: 4px 9px; border-radius: 6px; background: #f59e0b11;
-}
-.agent-btn {
-  position: relative; display: flex; align-items: center; gap: 9px;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; border: none;
-  padding: 10px 16px; border-radius: 9px; font-size: 13.5px; font-weight: 600; cursor: pointer;
-  box-shadow: 0 6px 18px -6px #6366f1aa; transition: transform .12s;
-}
-.agent-btn:hover { transform: translateY(-1px); }
-.agent-btn .badge {
-  background: #fff; color: #6366f1; border-radius: 20px; font-size: 11px; font-weight: 700;
-  padding: 1px 7px; margin-left: 2px;
 }
 .pulse {
   width: 9px; height: 9px; border-radius: 50%; background: #4ade80; display: inline-block;

@@ -4,7 +4,8 @@ import { Dashboard } from './dashboard/dashboard';
 import { Ingesta } from './sections/ingesta';
 import { Conocimiento } from './sections/conocimiento';
 import { Trazabilidad } from './sections/trazabilidad';
-import { Calidad } from './sections/calidad';
+import { DataQuality } from './sections/data-quality';
+import { BusinessRules } from './sections/business-rules';
 import { Monitorizacion } from './sections/monitorizacion';
 
 export const routes: Routes = [
@@ -15,7 +16,8 @@ export const routes: Routes = [
       { path: 'ingesta', component: Ingesta },
       { path: 'conocimiento', component: Conocimiento },
       { path: 'trazabilidad', component: Trazabilidad },
-      { path: 'calidad', component: Calidad },
+      { path: 'calidad', component: DataQuality },
+      { path: 'reglas-negocio', component: BusinessRules },
       { path: 'dashboard', component: Dashboard },
       { path: 'monitorizacion', component: Monitorizacion },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
