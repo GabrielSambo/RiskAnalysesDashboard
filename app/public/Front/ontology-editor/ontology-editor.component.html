@@ -1,0 +1,93 @@
+<div class="editor-page">
+  <app-page-header />
+
+  <main class="editor-body">
+    <!-- LEFT: tables -->
+    <div class="editor-left" #editorLeft [style.flex-basis.%]="leftWidthPct">
+      <div class="editor-header">
+        <div>
+          <h1 class="page-title">Ontology Editor</h1>
+          <p class="page-subtitle">
+            Review and edit the suggested Knowledge Graph schema. When you are satisfied, confirm the structure.
+          </p>
+        </div>
+      </div>
+
+      <div class="tables-grid">
+        <!-- Table 1: Nodes -->
+        <app-editable-table
+          title="1. Nodes"
+          [columns]="nodesColumns"
+          [data]="nodesData"
+          (dataChange)="onNodesChange($event)"
+        />
+
+        <!-- Table 2: Relationships -->
+        <app-editable-table
+          title="2. Relationships"
+          [columns]="relsColumns"
+          [data]="relsData"
+          (dataChange)="onRelsChange($event)"
+        />
+
+        <!-- Table 3: Connections (Relationship ↔ Nodes) -->
+        <app-editable-table
+          title="3. Connections"
+          [columns]="connColumns"
+          [data]="connData"
+          (dataChange)="onConnChange($event)"
+        />
+
+        <!-- Table 4: Attributes -->
+        <app-editable-table
+          title="4. Attributes"
+          [columns]="attrColumns"
+          [data]="attrData"
+          (dataChange)="onAttrChange($event)"
+        />
+      </div>
+
+      <div class="confirm-section">
+        <label class="clear-toggle">
+          <input type="checkbox" class="toggle-input" [(ngModel)]="clearFirst" />
+          <span class="toggle-track"></span>
+          <span class="toggle-label">
+            New session
+            <em>— wipes existing graph before import</em>
+          </span>
+        </label>
+        <button
+          class="btn-confirm"
+          [disabled]="isLoading"
+          (click)="confirmOntology()"
+        >
+          Confirm Structure &amp; Build Knowledge Graph
+        </button>
+      </div>
+    </div><!-- end editor-left -->
+
+    <!-- Drag resizer -->
+    <div class="resizer" (mousedown)="startResize($event)"></div>
+
+    <!-- RIGHT: schema diagram -->
+    <div class="schema-pane">
+      <div class="schema-header">
+        <span class="schema-title">Schema Preview</span>
+        <span class="schema-hint">Updates as you edit · drag nodes to rearrange</span>
+      </div>
+      <svg #schemaSvg class="schema-svg"></svg>
+      @if (nodesData.length === 0) {
+        <div class="schema-empty">
+          <span>No entities defined yet</span>
+        </div>
+      }
+    </div>
+
+  </main>
+
+  <app-footer />
+</div>
+
+@if (isLoading) {
+  <app-spinner [message]="spinnerMessage" />
+}

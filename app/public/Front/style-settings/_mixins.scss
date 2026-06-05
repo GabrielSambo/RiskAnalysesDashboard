@@ -1,0 +1,84 @@
+// =========================================================
+// Reusable mixins
+// =========================================================
+
+@use 'variables' as v;
+
+/// Full-screen background using Fondo.png
+@mixin fondo-background {
+  background-image: url('../../assets/img/Fondo.png');
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/// Flex center helper
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/// Full viewport page shell
+@mixin full-page {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  @include fondo-background;
+}
+
+/// Card container styling
+@mixin card {
+  background-color: v.$color-card-bg;
+  border-radius: v.$border-radius-lg;
+  padding: 32px;
+  border: 1px solid v.$color-border-subtle;
+}
+
+/// Primary button (yellow)
+@mixin btn-primary {
+  background-color: v.$color-ey-yellow;
+  color: v.$color-dark-bg;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 24px;
+  height: 40px;
+  transition: opacity 0.2s;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    opacity: 0.88;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+/// Secondary button (outlined)
+@mixin btn-secondary {
+  background-color: transparent;
+  color: v.$color-white;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid v.$color-border;
+  border-radius: 4px;
+  padding: 10px 24px;
+  height: 40px;
+  transition: all 0.2s;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

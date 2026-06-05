@@ -17,14 +17,12 @@ const SEV_ORDEN: Record<string, number> = { alta: 0, media: 1, baja: 2 };
   template: `
   <div class="page">
     <div class="page-head">
-      <span class="eyebrow">06 · Monitorización del modelo</span>
-      <h1>Monitorización del modelo y consistencia del riesgo</h1>
       <p>Qué está cambiando en el riesgo de la cartera entre periodos, por qué, y qué expedientes hay detrás. El detalle técnico (drift por variable, PSI) está más abajo.</p>
     </div>
 
     <!-- resumen del periodo (negocio) -->
     <div class="card resumen">
-      <h2 class="tight">📋 Resumen del periodo · {{ cmp.ventanaA.etiqueta }} → {{ cmp.ventanaB.etiqueta }}</h2>
+      <h2 class="tight">Resumen del periodo · {{ cmp.ventanaA.etiqueta }} → {{ cmp.ventanaB.etiqueta }}</h2>
       <p class="res-txt">{{ resumen.texto }}</p>
       <div class="drivers">
         <div class="driver" *ngFor="let d of resumen.drivers" [class.clickable]="d.target" (click)="go(d.target)">

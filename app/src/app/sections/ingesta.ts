@@ -9,8 +9,6 @@ import { FUENTES, PREVIEW, VALIDACIONES_INGESTA } from '../data/ingesta';
   template: `
   <div class="page">
     <div class="page-head">
-      <span class="eyebrow">01 · Ingesta</span>
-      <h1>Ingesta de datos</h1>
       <p>Carga desde Excel, CSV o base de datos. Vista rápida de tablas y preview para validar que los datos están bien cargados antes de procesar.</p>
     </div>
 

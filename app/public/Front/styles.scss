@@ -1,0 +1,52 @@
+/* =========================================================
+   Global styles – DataGraph Knowledge Graph Builder
+   ========================================================= */
+
+@use './app/style-settings/variables' as v;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  font-family: v.$font-primary;
+  background-color: v.$color-dark-bg;
+  color: v.$color-white;
+  overflow: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: v.$color-dark-bg;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4a4a55;
+  border-radius: 4px;
+
+  &:hover {
+    background: #5a5a65;
+  }
+}

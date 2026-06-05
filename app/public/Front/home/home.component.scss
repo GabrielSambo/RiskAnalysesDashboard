@@ -1,0 +1,152 @@
+@use '../../../style-settings/mixins' as m;
+@use '../../../style-settings/variables' as v;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.home-page {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  background: transparent;
+}
+
+// ── Header ───────────────────────────────────────────
+
+.home-header {
+  flex-shrink: 0;
+  padding: 2.5rem 1.5rem 2rem;
+  text-align: center;
+}
+
+.home-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.5px;
+}
+
+.title-white {
+  color: v.$color-white;
+}
+
+.title-yellow {
+  color: v.$color-ey-yellow;
+}
+
+.home-subtitle {
+  font-size: 0.9rem;
+  color: v.$color-muted;
+  margin: 0;
+}
+
+// ── Grid ──────────────────────────────────────────────
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  padding: 0 1.5rem 1.5rem;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  align-content: start;
+  align-items: stretch;
+}
+
+// ── Card ──────────────────────────────────────────────
+
+.feature-card {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  height: 100%;
+  background: v.$color-card-bg;
+  border: 1px solid v.$color-border-subtle;
+  border-radius: v.$border-radius-lg;
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+
+  &:hover {
+    border-color: v.$color-ey-yellow;
+    background: rgba(255, 230, 0, 0.04);
+    transform: translateY(-2px);
+
+    .card-icon {
+      color: v.$color-ey-yellow;
+      background: rgba(255, 230, 0, 0.1);
+    }
+
+    .card-arrow {
+      color: v.$color-ey-yellow;
+      opacity: 1;
+    }
+  }
+}
+
+.card-icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: v.$border-radius;
+  color: v.$color-light-muted;
+  transition: background 0.2s, color 0.2s;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: v.$color-white;
+  margin: 0 0 0.4rem;
+}
+
+.card-desc {
+  font-size: 0.8rem;
+  color: v.$color-light-muted;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.card-arrow {
+  flex-shrink: 0;
+  color: v.$color-muted;
+  opacity: 0.5;
+  transition: color 0.2s, opacity 0.2s;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+// ── Responsive ────────────────────────────────────────
+
+@media (max-width: 640px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+}

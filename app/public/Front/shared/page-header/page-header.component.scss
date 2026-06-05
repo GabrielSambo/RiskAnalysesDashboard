@@ -1,0 +1,26 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 32px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ey-logo {
+  height: 36px;
+  width: auto;
+}
+
+.app-title {
+  font-size: 14px;
+  font-weight: 400;
+  color: #ffffff;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}

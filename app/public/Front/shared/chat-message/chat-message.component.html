@@ -1,0 +1,53 @@
+<div class="message-wrapper" [class.user-wrapper]="message.role === 'user'" [class.assistant-wrapper]="message.role === 'assistant'">
+  <div class="message-avatar">
+    @if (message.role === 'assistant') {
+      <div class="avatar assistant-avatar">
+        <img src="assets/img/Circle.png" alt="Maestro" class="avatar-image">
+      </div>
+    }
+  </div>
+  <div class="message" [class.user]="message.role === 'user'" [class.assistant]="message.role === 'assistant'">
+    @if (message.role === 'assistant') {
+      <div class="message-author">
+        <p class="message-author__name">Maestro</p>
+        <p class="message-author__time">{{ timeAgo }}</p>
+      </div>
+    }
+    <div class="message-content" [innerHTML]="message.content | markdown"></div>
+    @if (message.role === 'assistant' && message.resultType === 'table' && message.table) {
+      <div class="message-table-shell">
+        <div class="message-table-header">
+          <div class="message-table-meta">
+            <span class="message-table-title">Resultados</span>
+            <span class="message-table-count">{{ message.rowCount || message.table.rows.length }} filas</span>
+          </div>
+          <div class="message-table-actions">
+            <button type="button" class="table-action" (click)="exportCsv()">Export CSV</button>
+            <button type="button" class="table-action" (click)="exportJson()">Export JSON</button>
+          </div>
+        </div>
+
+        <div class="message-table-wrap">
+          <table class="message-table">
+            <thead>
+              <tr>
+                @for (col of message.table.columns; track col) {
+                  <th>{{ col }}</th>
+                }
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of message.table.rows; track $index) {
+                <tr>
+                  @for (col of message.table.columns; track col) {
+                    <td>{{ row[col] }}</td>
+                  }
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+  </div>
+</div>

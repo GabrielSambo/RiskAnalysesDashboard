@@ -12,8 +12,6 @@ import { NODOS, ARISTAS, CAPAS, NodoLinaje } from '../data/lineage';
   template: `
   <div class="page">
     <div class="page-head">
-      <span class="eyebrow">03 · Trazabilidad</span>
-      <h1>Trazabilidad (data lineage)</h1>
       <p>Flujo completo origen → transformación → modelo → dashboard. Pincha en un nodo para ver su detalle, sus dependencias y, aguas abajo, todo lo que se vería afectado si ese dato cambia.</p>
     </div>
 
@@ -24,7 +22,7 @@ import { NODOS, ARISTAS, CAPAS, NodoLinaje } from '../data/lineage';
     <div class="grid2 lin-grid">
       <div class="card">
         <h2 class="tight">Grafo de linaje</h2>
-        <p class="hint">💡 Click en cualquier nodo · se resalta lo que hay aguas abajo</p>
+        <p class="hint">Click en cualquier nodo · se resalta lo que hay aguas abajo</p>
         <app-chart [option]="graphOption()" height="420px" (pointClick)="onNode($event)"></app-chart>
       </div>
 
@@ -53,7 +51,7 @@ import { NODOS, ARISTAS, CAPAS, NodoLinaje } from '../data/lineage';
         </ng-container>
         <ng-template #vacio>
           <div class="empty">
-            <span class="empty-ico">🔗</span>
+            <span class="empty-ico"></span>
             <p>Selecciona un nodo del grafo para ver su detalle e impacto aguas abajo.</p>
           </div>
         </ng-template>

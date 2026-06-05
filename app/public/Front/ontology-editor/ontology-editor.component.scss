@@ -1,0 +1,213 @@
+@use '../../../style-settings/mixins' as m;
+@use '../../../style-settings/variables' as v;
+
+:host {
+  display: flex;
+  flex: 1;
+}
+
+.editor-page {
+  @include m.full-page;
+  overflow: hidden;
+}
+
+.editor-body {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  min-height: 0;
+  overflow: hidden;
+}
+
+// ── Left panel: tables ────────────────────────────────────
+.editor-left {
+  flex: 0 0 48%;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 1.5rem 1.5rem 2rem;
+  min-width: 0;
+}
+
+// ── Drag resizer ─────────────────────────────────────────
+.resizer {
+  flex: 0 0 5px;
+  background: rgba(255, 255, 255, 0.07);
+  cursor: col-resize;
+  transition: background 0.2s;
+  position: relative;
+  z-index: 10;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0 -4px;
+  }
+
+  &:hover {
+    background: rgba(255, 230, 0, 0.5);
+  }
+}
+
+.editor-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+// ── Right panel: schema SVG ──────────────────────────────
+.schema-pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  position: relative;
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.schema-header {
+  flex-shrink: 0;
+  padding: 1rem 1.25rem 0.5rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.schema-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: v.$color-light-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.schema-hint {
+  font-size: 10px;
+  color: v.$color-muted;
+}
+
+.schema-svg {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.schema-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: v.$color-muted;
+  font-size: 13px;
+  pointer-events: none;
+}
+
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: v.$color-white;
+}
+
+.page-subtitle {
+  margin-top: 4px;
+  font-size: 14px;
+  color: v.$color-muted;
+  line-height: 1.5;
+}
+
+.btn-back {
+  @include m.btn-secondary;
+  font-size: 13px;
+  padding: 8px 16px;
+  height: auto;
+}
+
+.tables-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.confirm-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 2rem 0;
+}
+
+// Custom toggle switch
+.clear-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+
+  &:checked + .toggle-track {
+    background: v.$color-ey-yellow;
+
+    &::after {
+      transform: translateX(14px);
+      background: #1a1a24;
+    }
+  }
+}
+
+.toggle-track {
+  position: relative;
+  display: inline-block;
+  width: 34px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 9px;
+  flex-shrink: 0;
+  transition: background 0.2s ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    background: v.$color-white;
+    border-radius: 50%;
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+}
+
+.toggle-label {
+  font-size: 13px;
+  color: v.$color-white;
+
+  em {
+    font-style: normal;
+    font-size: 12px;
+    color: v.$color-muted;
+  }
+}
+
+.btn-confirm {
+  @include m.btn-primary;
+  font-size: 15px;
+  padding: 12px 40px;
+  height: auto;
+}

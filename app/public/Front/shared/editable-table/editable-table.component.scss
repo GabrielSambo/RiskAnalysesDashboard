@@ -1,0 +1,253 @@
+@use '../../../style-settings/variables' as v;
+
+.editable-table {
+  margin-bottom: 2rem;
+}
+
+.table-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: v.$color-ey-yellow;
+  margin-bottom: 12px;
+  letter-spacing: 0.01em;
+}
+
+.table-wrapper {
+  background-color: rgba(42, 42, 53, 0.8);
+  border-radius: v.$border-radius;
+  overflow: hidden;
+  border: 1px solid v.$color-border-subtle;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #2a2a35;
+
+  th {
+    padding: 12px 14px;
+    text-align: left;
+    font-weight: 600;
+    color: v.$color-ey-yellow;
+    border-bottom: 2px solid v.$color-border-subtle;
+    white-space: nowrap;
+  }
+}
+
+tbody {
+  tr {
+    transition: background-color 0.15s;
+
+    &:hover {
+      background-color: rgba(74, 74, 85, 0.3);
+    }
+
+    &:nth-child(even) {
+      background-color: rgba(26, 26, 36, 0.4);
+    }
+  }
+
+  td {
+    padding: 6px 10px;
+    border-bottom: 1px solid rgba(74, 74, 85, 0.5);
+  }
+}
+
+// Inline input styling
+.cell-input,
+.cell-select {
+  width: 100%;
+  background-color: transparent;
+  border: 1px solid transparent;
+  color: v.$color-white;
+  font-size: 13px;
+  font-family: inherit;
+  padding: 6px 8px;
+  border-radius: 3px;
+  outline: none;
+  transition: border-color 0.2s;
+
+  &:focus {
+    border-color: v.$color-ey-yellow;
+    background-color: rgba(255, 255, 255, 0.04);
+  }
+}
+
+.cell-select {
+  appearance: auto;
+  cursor: pointer;
+
+  option {
+    background-color: v.$color-dark-bg;
+    color: v.$color-white;
+  }
+}
+
+.cell-text {
+  padding: 6px 8px;
+  display: block;
+  color: v.$color-white;
+}
+
+// Action column
+.action-col {
+  width: 40px;
+  text-align: center;
+}
+
+.btn-remove {
+  background: none;
+  border: none;
+  color: v.$color-error;
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px;
+  border-radius: 3px;
+
+  &:hover {
+    background-color: rgba(244, 67, 54, 0.15);
+  }
+}
+
+.btn-add {
+  margin-top: 10px;
+  background-color: transparent;
+  border: 1px dashed v.$color-border;
+  color: v.$color-muted;
+  font-size: 13px;
+  padding: 8px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    color: v.$color-ey-yellow;
+    border-color: v.$color-ey-yellow;
+  }
+}
+
+.empty-row {
+  text-align: center;
+  color: v.$color-muted;
+  padding: 20px !important;
+  font-style: italic;
+}
+
+// Multi-select dropdown
+.multi-select-wrapper,
+.dropdown-wrapper {
+  position: relative;
+}
+
+.multi-select-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: transparent;
+  border: 1px solid transparent;
+  color: v.$color-white;
+  font-size: 13px;
+  font-family: inherit;
+  padding: 6px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  text-align: left;
+
+  &:hover,
+  &:focus {
+    border-color: v.$color-ey-yellow;
+    background-color: rgba(255, 255, 255, 0.04);
+  }
+}
+
+.multi-select-text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.multi-select-arrow {
+  flex-shrink: 0;
+  margin-left: 8px;
+  width: 6px;
+  height: 6px;
+  border-right: 1.5px solid rgba(176, 176, 192, 0.6);
+  border-bottom: 1.5px solid rgba(176, 176, 192, 0.6);
+  transform: rotate(45deg) translateY(-2px);
+}
+
+.multi-select-dropdown {
+  position: fixed;
+  min-width: 200px;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: v.$color-dark-bg;
+  border: 1px solid v.$color-border-subtle;
+  border-radius: 4px;
+  z-index: 9999;
+  padding: 4px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.multi-select-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  color: v.$color-white;
+  font-size: 13px;
+  transition: background-color 0.15s;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+  }
+
+  input[type='checkbox'] {
+    accent-color: v.$color-ey-yellow;
+  }
+}
+
+.single-select-dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.3);
+  transition: border-color 0.15s, background 0.15s;
+
+  &.selected {
+    border-color: v.$color-ey-yellow;
+    background: v.$color-ey-yellow;
+  }
+}
+
+.option-muted {
+  color: v.$color-muted;
+  font-style: italic;
+}
+
+.multi-select-empty {
+  display: block;
+  padding: 8px 12px;
+  color: v.$color-muted;
+  font-size: 12px;
+  font-style: italic;
+}

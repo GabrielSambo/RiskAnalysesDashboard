@@ -1,0 +1,113 @@
+@use '../../../style-settings/mixins' as m;
+@use '../../../style-settings/variables' as v;
+
+$sidebar-width: 56px;
+
+:host {
+  display: flex;
+  flex: 1;
+}
+
+.layout {
+  @include m.full-page;
+}
+
+.layout-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+// ── Sidebar ────────────────────────────────────────────
+
+.sidebar {
+  width: $sidebar-width;
+  flex-shrink: 0;
+  background: rgba(21, 21, 27, 0.85);
+  border-right: 1px solid v.$color-border-subtle;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+  overflow-y: auto;
+}
+
+.nav-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 6px;
+}
+
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: v.$border-radius;
+  border-left: 3px solid transparent;
+  color: v.$color-muted;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: v.$color-light-muted;
+
+    // Tooltip
+    &::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      left: calc(100% + 10px);
+      top: 50%;
+      transform: translateY(-50%);
+      background: v.$color-surface;
+      color: v.$color-white;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+      padding: 5px 10px;
+      border-radius: v.$border-radius;
+      border: 1px solid v.$color-border-subtle;
+      pointer-events: none;
+      z-index: 100;
+    }
+  }
+
+  &.active {
+    border-left-color: v.$color-ey-yellow;
+    background: rgba(255, 230, 0, 0.07);
+    color: v.$color-white;
+
+    .nav-icon svg {
+      stroke: v.$color-ey-yellow;
+    }
+  }
+}
+
+.nav-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    transition: stroke 0.15s;
+  }
+}
+
+// ── Main content ───────────────────────────────────────
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}

@@ -10,8 +10,6 @@ import { CHECKS, Check } from '../data/calidad';
   template: `
   <div class="page">
     <div class="page-head">
-      <span class="eyebrow">04 · Control de calidad + agente</span>
-      <h1>Control de calidad + agente</h1>
       <p>Checks automáticos de completitud, unicidad, coherencia y reglas de negocio, priorizados por criticidad. Pincha un problema para ver los contratos afectados, o abre el agente para el resumen y las causas.</p>
     </div>
 

@@ -15,8 +15,6 @@ import { SERIE, POR_ESTADO, DRIVERS } from '../data/mock-data';
   template: `
   <div class="page">
     <div class="page-head">
-      <span class="eyebrow">02 · Conocimiento del dato</span>
-      <h1>Conocimiento del dato</h1>
       <p>Explora cada variable: su evolución, distribución, estado de calidad y dónde impacta. Pincha una variable para ver su detalle y el asistente te la explica con su origen y dependencias.</p>
     </div>
 
@@ -63,10 +61,10 @@ import { SERIE, POR_ESTADO, DRIVERS } from '../data/mock-data';
               <span class="chip" *ngFor="let u of v.usa">{{ u }}</span>
             </div>
 
-            <button class="link-btn" *ngIf="v.nodeId" (click)="verLinaje(v)">🔗 Ver cómo se construye →</button>
+            <button class="link-btn" *ngIf="v.nodeId" (click)="verLinaje(v)">Ver cómo se construye →</button>
           </ng-container>
           <ng-template #vacio>
-            <div class="empty"><span class="empty-ico">🔎</span><p>Selecciona una variable para explorarla.</p></div>
+            <div class="empty"><span class="empty-ico"></span><p>Selecciona una variable para explorarla.</p></div>
           </ng-template>
         </div>
       </div>

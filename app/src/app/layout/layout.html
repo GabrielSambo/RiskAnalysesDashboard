@@ -1,31 +1,27 @@
-<div class="shell">
-  <aside class="sidebar">
-    <div class="brand">
-      <span class="logo">◆</span>
+<div class="layout">
+  <header class="topbar">
+    <div class="topbar-header">
       <div class="brand-txt">
         <strong>Control de Datos</strong>
-        <span>Dashboard IA · riesgo de crédito</span>
+        <span>Dashboard IA · Riesgo de credito</span>
       </div>
     </div>
 
-    <nav class="nav">
-      <a *ngFor="let n of nav" [routerLink]="n.ruta" routerLinkActive="active" class="nav-item">
-        <span class="nav-num">{{ n.num }}</span>
-        <span class="nav-ico">{{ n.icono }}</span>
-        <span class="nav-title">{{ n.titulo }}</span>
+    <nav class="topnav">
+      <a *ngFor="let n of nav"
+         class="nav-item"
+         [routerLink]="n.ruta"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: true }">
+        {{ n.titulo }}
       </a>
     </nav>
+  </header>
 
-    <div class="side-foot">
-      <span class="demo-tag">DEMO · datos simulados</span>
-    </div>
-  </aside>
-
-  <main class="content">
+  <main class="main-content">
     <router-outlet></router-outlet>
   </main>
 </div>
 
-<!-- superposiciones globales compartidas por todas las secciones -->
 <app-agent-panel></app-agent-panel>
 <app-contracts-modal></app-contracts-modal>

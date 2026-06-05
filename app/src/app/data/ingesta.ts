@@ -12,9 +12,9 @@ export interface Fuente {
 }
 
 export const FUENTES: Fuente[] = [
-  { tipo: 'Excel', icono: '📊', nombre: 'cartera_riesgo_2025.xlsx', estado: 'cargado', filas: 13070, columnas: 42, rangoFechas: '2024-01 → 2025-12', peso: '8,4 MB' },
-  { tipo: 'CSV', icono: '📄', nombre: 'movimientos_contencioso.csv', estado: 'cargado', filas: 4820, columnas: 18, rangoFechas: '2024-01 → 2025-12', peso: '2,1 MB' },
-  { tipo: 'BBDD', icono: '🗄️', nombre: 'core_banking.expedientes', estado: 'cargado', filas: 13070, columnas: 67, rangoFechas: '2019-03 → 2025-12', peso: '— conexión live' },
+  { tipo: 'Excel', icono: '', nombre: 'cartera_riesgo_2025.xlsx', estado: 'cargado', filas: 13070, columnas: 42, rangoFechas: '2024-01 → 2025-12', peso: '8,4 MB' },
+  { tipo: 'CSV', icono: '', nombre: 'movimientos_contencioso.csv', estado: 'cargado', filas: 4820, columnas: 18, rangoFechas: '2024-01 → 2025-12', peso: '2,1 MB' },
+  { tipo: 'BBDD', icono: '', nombre: 'core_banking.expedientes', estado: 'cargado', filas: 13070, columnas: 67, rangoFechas: '2019-03 → 2025-12', peso: '— conexión live' },
 ];
 
 export interface PreviewTabla {

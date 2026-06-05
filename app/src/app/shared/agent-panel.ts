@@ -56,7 +56,7 @@ import { AGENTE_RESUMEN, AgenteTarget } from '../data/calidad';
         </div>
 
         <h4 class="sec">Posibles causas</h4>
-        <div class="ao-line cause" *ngFor="let c of resumen.causas">💡 {{ c }}</div>
+        <div class="ao-line cause" *ngFor="let c of resumen.causas">{{ c }}</div>
       </div>
 
       <div class="thresholds">

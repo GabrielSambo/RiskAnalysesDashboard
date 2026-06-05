@@ -1,0 +1,16 @@
+<div class="toast-container">
+  @for (toast of toastService.toasts(); track toast.id) {
+    <div class="toast" [class]="'toast--' + toast.type">
+      <span class="toast__icon">
+        @switch (toast.type) {
+          @case ('success') { &#10003; }
+          @case ('error') { &#10007; }
+          @case ('warning') { &#9888; }
+          @case ('info') { &#8505; }
+        }
+      </span>
+      <span class="toast__message">{{ toast.message }}</span>
+      <button class="toast__close" (click)="toastService.dismiss(toast.id)">&times;</button>
+    </div>
+  }
+</div>

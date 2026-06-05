@@ -1,0 +1,123 @@
+<div class="editable-table">
+  @if (title) {
+    <h3 class="table-title">{{ title }}</h3>
+  }
+
+  <div class="table-wrapper">
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            @for (col of columns; track col.key) {
+              <th>{{ col.header }}</th>
+            }
+            @if (allowDelete) {
+              <th class="action-col"></th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of rows; track $index; let i = $index) {
+            <tr>
+              @for (col of columns; track col.key) {
+                <td>
+                  @if (col.readonly) {
+                    <span class="cell-text">{{ row[col.key] }}</span>
+                  } @else if (col.type === 'select') {
+                    <div class="dropdown-wrapper">
+                      <button
+                        class="multi-select-trigger"
+                        type="button"
+                        (click)="toggleDropdown(i, col.key, $event)"
+                      >
+                        <span class="multi-select-text">{{ row[col.key] || '-- Select --' }}</span>
+                        <span class="multi-select-arrow"></span>
+                      </button>
+                      @if (isDropdownOpen(i, col.key)) {
+                        <div class="multi-select-dropdown"
+                          [style.top.px]="dropdownPositions[getDropdownKey(i, col.key)]?.top"
+                          [style.left.px]="dropdownPositions[getDropdownKey(i, col.key)]?.left"
+                          [style.width.px]="dropdownPositions[getDropdownKey(i, col.key)]?.width"
+                        >
+                          <div class="multi-select-option" (click)="selectSingle(row, col.key, '')">
+                            <span class="option-muted">-- Select --</span>
+                          </div>
+                          @for (opt of getOptionsForCell(row, col); track opt) {
+                            <div class="multi-select-option" (click)="selectSingle(row, col.key, opt)">
+                              {{ opt }}
+                            </div>
+                          }
+                          @if (getOptionsForCell(row, col).length === 0) {
+                            <span class="multi-select-empty">No options available</span>
+                          }
+                        </div>
+                      }
+                    </div>
+                  } @else if (col.type === 'multi-select') {
+                    <div class="dropdown-wrapper">
+                      <button
+                        class="multi-select-trigger"
+                        type="button"
+                        (click)="toggleDropdown(i, col.key, $event)"
+                      >
+                        <span class="multi-select-text">
+                          {{ row[col.key] || '-- Select columns --' }}
+                        </span>
+                        <span class="multi-select-arrow"></span>
+                      </button>
+                      @if (isDropdownOpen(i, col.key)) {
+                        <div class="multi-select-dropdown"
+                          [style.top.px]="dropdownPositions[getDropdownKey(i, col.key)]?.top"
+                          [style.left.px]="dropdownPositions[getDropdownKey(i, col.key)]?.left"
+                          [style.width.px]="dropdownPositions[getDropdownKey(i, col.key)]?.width"
+                        >
+                          @for (opt of col.options; track opt) {
+                            <label class="multi-select-option">
+                              <input
+                                type="checkbox"
+                                [checked]="getMultiSelectValues(row, col.key).includes(opt)"
+                                (change)="toggleMultiSelect(row, col.key, opt)"
+                              />
+                              <span>{{ opt }}</span>
+                            </label>
+                          }
+                          @if (!col.options || col.options.length === 0) {
+                            <span class="multi-select-empty">No columns available</span>
+                          }
+                        </div>
+                      }
+                    </div>
+                  } @else {
+                    <input
+                      type="text"
+                      class="cell-input"
+                      [ngModel]="row[col.key]"
+                      (ngModelChange)="row[col.key] = $event; onCellChange()"
+                    />
+                  }
+                </td>
+              }
+              @if (allowDelete) {
+                <td class="action-col">
+                  <button class="btn-remove" (click)="removeRow(i)" title="Remove row">&times;</button>
+                </td>
+              }
+            </tr>
+          }
+
+          @if (rows.length === 0) {
+            <tr>
+              <td [attr.colspan]="columns.length + (allowDelete ? 1 : 0)" class="empty-row">
+                No data. Click "Add Row" to start.
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  @if (allowAdd) {
+    <button class="btn-add" (click)="addRow()">+ Add Row</button>
+  }
+</div>

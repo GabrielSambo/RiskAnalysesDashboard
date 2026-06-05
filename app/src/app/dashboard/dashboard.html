@@ -3,8 +3,6 @@
   <header class="topbar">
     <div class="brand">
       <div>
-        <span class="eyebrow">05 · Dashboard principal</span>
-        <h1>Dashboard principal (core)</h1>
         <p>Series temporales, segmentación, anomalías y explicabilidad sobre la cartera de riesgo.</p>
       </div>
     </div>
@@ -67,7 +65,7 @@
     <div class="panel-head">
       <div>
         <h2>Serie temporal por fecha de referencia</h2>
-        <p class="hint">💡 Haz click en un punto marcado (▲ / ▼) para ver la explicación automática</p>
+        <p class="hint">Haz click en un punto marcado (▲ / ▼) para ver la explicación automática</p>
       </div>
       <div class="seg">
         <button *ngFor="let m of metricKeys" [class.on]="selectedMetric() === m" (click)="setMetric(m)">
@@ -163,13 +161,13 @@
         </div>
       </div>
       <button class="contracts-btn" *ngIf="a.scope" (click)="verContratos()">
-        📋 Ver contratos afectados
+        Ver contratos afectados
       </button>
       <button class="contracts-btn ghost" *ngIf="a.nodeId" (click)="verLinaje()">
-        🔗 Ver cómo se construye
+        Ver cómo se construye
       </button>
       <button class="contracts-btn ghost" (click)="preguntarAsistente()">
-        💬 Preguntar al asistente
+        Preguntar al asistente
       </button>
       <p class="ai-note">Explicación generada automáticamente a partir de las estadísticas del punto seleccionado y el delta con el periodo anterior.</p>
     </div>
